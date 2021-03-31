@@ -2,6 +2,8 @@
 
 this repo to check the progress of learning flutter on https://codewithandrea.com/
 
+Status: ON-GOING
+
 
 A new Flutter project.
 
