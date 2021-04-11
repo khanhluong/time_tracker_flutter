@@ -2,9 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter/screens/sign_in/sign_in_button.dart';
 import 'package:time_tracker_flutter/screens/sign_in/social_sign_in_button.dart';
+import 'package:time_tracker_flutter/services/auth.dart';
 
 class SignPage extends StatelessWidget {
-  const SignPage({Key key, @required this.onSignIn}) : super(key: key);
+  const SignPage({Key key, @required this.onSignIn, @required this.auth})
+      : super(key: key);
+
+  final AuthBase auth;
 
   final void Function(User) onSignIn;
 
