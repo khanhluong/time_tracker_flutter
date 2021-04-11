@@ -18,7 +18,7 @@ class _LandingPageState extends State<LandingPage> {
     setState(() {
       _user = user;
     });
-    print('User id: ${user.uid}');
+    // print('User id: ${user.uid}');
   }
 
   @override
