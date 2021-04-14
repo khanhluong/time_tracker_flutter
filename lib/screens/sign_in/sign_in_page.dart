@@ -16,6 +16,14 @@ class SignPage extends StatelessWidget {
     }
   }
 
+  void signInWithGoogle() async {
+    try {
+      await auth.signInWithGoogle();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +59,7 @@ class SignPage extends StatelessWidget {
             text: 'Sign In with Google',
             textColor: Colors.black87,
             color: Colors.white,
-            onPressed: () {},
+            onPressed: signInWithGoogle,
           ),
           SizedBox(
             height: 8,
