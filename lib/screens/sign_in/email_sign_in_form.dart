@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter/common_widgets/form_submit_button.dart';
+import 'package:time_tracker_flutter/common_widgets/show_alert_dialog.dart';
 import 'package:time_tracker_flutter/screens/sign_in/validators.dart';
 import 'package:time_tracker_flutter/services/auth.dart';
 
@@ -40,7 +43,14 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       }
       Navigator.of(context).pop();
     } catch (e) {
-      print(e.toString());
+      if (Platform.isIOS) {
+        print('Show CupertinoAlertDialog');
+      } else {
+        showAlertDialog(context,
+            title: 'Sign In Fail',
+            content: e.toString(),
+            defaultActionContext: 'OK');
+      }
     } finally {
       _isLoading = false;
     }
