@@ -1,20 +1,20 @@
-import 'package:flutter/cupertino.dart';
-import 'package:time_tracker_flutter/services/auth.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:time_tracker_flutter/services/auth.dart';
 
-class AuthProvider extends InheritedWidget {
-  final AuthBase auth;
+// class AuthProvider extends InheritedWidget {
+//   final AuthBase auth;
 
-  final Widget child;
+//   final Widget child;
 
-  AuthProvider({@required this.auth, @required this.child});
+//   AuthProvider({@required this.auth, @required this.child});
 
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
+//   @override
+//   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
 
-  static AuthBase of(BuildContext context) {
-    AuthProvider provider =
-        context.dependOnInheritedWidgetOfExactType<AuthProvider>();
+//   static AuthBase of(BuildContext context) {
+//     AuthProvider provider =
+//         context.dependOnInheritedWidgetOfExactType<AuthProvider>();
 
-    return provider.auth;
-  }
-}
+//     return provider.auth;
+//   }
+// }
