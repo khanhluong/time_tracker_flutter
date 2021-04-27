@@ -2,14 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter/screens/home/home_page.dart';
 import 'package:time_tracker_flutter/screens/sign_in/sign_in_page.dart';
-import 'package:time_tracker_flutter/services/auth.dart';
+import 'package:time_tracker_flutter/services/auth_provider.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({Key key, @required this.auth}) : super(key: key);
-  final AuthBase auth;
-
   @override
   Widget build(BuildContext context) {
+    final auth = AuthProvider.of(context);
     return StreamBuilder<User>(
         stream: auth.authStateChanges(),
         builder: (context, snapshot) {
@@ -17,11 +15,9 @@ class LandingPage extends StatelessWidget {
             final User _user = snapshot.data;
             if (_user == null) {
               return SignPage(
-                auth: auth,
               );
             } else {
               return HomePage(
-                auth: auth,
               );
             }
           }
