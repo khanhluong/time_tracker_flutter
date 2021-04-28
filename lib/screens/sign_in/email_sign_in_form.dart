@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter/common_widgets/form_submit_button.dart';
 import 'package:time_tracker_flutter/common_widgets/show_alert_dialog.dart';
+import 'package:time_tracker_flutter/common_widgets/show_exception_alert_dialog.dart';
 import 'package:time_tracker_flutter/screens/sign_in/validators.dart';
 import 'package:time_tracker_flutter/services/auth.dart';
 
@@ -41,14 +43,15 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         await auth.createUserWithEmailAndPassword(_email, _password);
       }
       Navigator.of(context).pop();
-    } catch (e) {
+    } on FirebaseException catch (e) {
       if (Platform.isIOS) {
         print('Show CupertinoAlertDialog');
       } else {
-        showAlertDialog(context,
-            title: 'Sign In Fail',
-            content: e.toString(),
-            defaultActionContext: 'OK');
+        showExceptionAlertDialog(
+          context,
+          title: 'Sign In Fail',
+          exception: e,
+        );
       }
     } finally {
       _isLoading = false;

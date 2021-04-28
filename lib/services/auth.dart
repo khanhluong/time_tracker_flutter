@@ -43,7 +43,9 @@ class Auth implements AuthBase {
         return userCredential.user;
       } else {
         throw FirebaseAuthException(
-            code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
+          code: 'ERROR_ABORTED_BY_USER',
+          message: 'Sign in aborted by user',
+        );
       }
     }
   }
@@ -63,7 +65,9 @@ class Auth implements AuthBase {
         return userCredential.user;
       case FacebookLoginStatus.cancel:
         throw FirebaseAuthException(
-            code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
+          code: 'ERROR_ABORTED_BY_USER',
+          message: 'Sign in aborted by user',
+        );
       case FacebookLoginStatus.error:
         throw FirebaseAuthException(
           code: 'ERROR_FACEBOOK_LOGIN_FAIL',
