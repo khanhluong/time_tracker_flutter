@@ -9,11 +9,18 @@ import 'package:time_tracker_flutter/screens/sign_in/social_sign_in_button.dart'
 import 'package:time_tracker_flutter/services/auth.dart';
 
 class SignPage extends StatelessWidget {
+  const SignPage({Key key, this.bloc}) : super(key: key);
+  final SignInBloc bloc;
+
   static Widget create(BuildContext context) {
     return Provider<SignInBloc>(
-      create: (_) => SignInBloc(),
-      child: SignPage(),
-    );
+        create: (_) => SignInBloc(),
+        dispose: (__, bloc) => bloc.dispose(),
+        child: Consumer<SignInBloc>(
+          builder: (_, bloc, __) => SignPage(
+            bloc: bloc,
+          ),
+        ));
   }
 
   void _showSignInError(BuildContext context, Exception exception) {
@@ -30,7 +37,6 @@ class SignPage extends StatelessWidget {
 
   Future<void> signInAnonymoustly(BuildContext context) async {
     final auth = Provider.of<AuthBase>(context, listen: false);
-    final bloc = Provider.of<SignInBloc>(context, listen: false);
 
     try {
       bloc.setIsLoading(true);
@@ -44,7 +50,6 @@ class SignPage extends StatelessWidget {
 
   Future<void> signInWithGoogle(BuildContext context) async {
     final auth = Provider.of<AuthBase>(context, listen: false);
-    final bloc = Provider.of<SignInBloc>(context, listen: false);
     try {
       bloc.setIsLoading(true);
       await auth.signInWithGoogle();
@@ -57,7 +62,6 @@ class SignPage extends StatelessWidget {
 
   Future<void> signInWithFacebook(BuildContext context) async {
     final auth = Provider.of<AuthBase>(context, listen: false);
-    final bloc = Provider.of<SignInBloc>(context, listen: false);
     try {
       bloc.setIsLoading(true);
       await auth.signInWithFacebook();
