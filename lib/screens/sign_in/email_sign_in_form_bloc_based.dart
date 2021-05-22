@@ -6,13 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter/common_widgets/form_submit_button.dart';
 import 'package:time_tracker_flutter/common_widgets/show_exception_alert_dialog.dart';
 import 'package:time_tracker_flutter/screens/sign_in/email_sign_in_bloc.dart';
-import 'package:time_tracker_flutter/screens/sign_in/validators.dart';
 import 'package:time_tracker_flutter/services/auth.dart';
 
 import 'email_sign_in_model.dart';
 
-class EmailSignInFormBLocBased extends StatefulWidget
-    with EmailAndPasswordValidators {
+class EmailSignInFormBLocBased extends StatefulWidget {
   EmailSignInFormBLocBased({@required this.bloc});
   final EmailSignInBloc bloc;
 
@@ -70,35 +68,19 @@ class _EmailSignInFormBLocBasedState extends State<EmailSignInFormBLocBased> {
   }
 
   void _emailEditingComplete(EmailSignInModel model) {
-    final newFocus = widget.emailValidator.isValid(model.email)
+    final newFocus = model.emailValidator.isValid(model.email)
         ? _passwordFocusNode
         : _emailFocusNode;
     FocusScope.of(context).requestFocus(newFocus);
   }
 
-  void _toogleFormType(EmailSignInModel model) {
-    widget.bloc.updateWith(
-      email: '',
-      password: '',
-      submitted: false,
-      formType: model.formType == EmailSignInFormType.signIn
-          ? EmailSignInFormType.register
-          : EmailSignInFormType.signIn,
-    );
+  void _toogleFormType() {
+    widget.bloc.toogleFormType();
     _emailController.clear();
     _passwordController.clear();
   }
 
   List<Widget> _buildchildren([EmailSignInModel model]) {
-    final primaryText = model.formType == EmailSignInFormType.signIn
-        ? 'Sign in'
-        : 'Create an account';
-    final secondaryText = model.formType == EmailSignInFormType.register
-        ? 'Need an account? Register'
-        : 'Have an account? Sign in';
-
-    bool submitEnable = widget.emailValidator.isValid(model.email) &&
-        widget.passwordValidator.isValid(model.password);
     return [
       _buildEmailTextField(model),
       SizedBox(
@@ -109,53 +91,49 @@ class _EmailSignInFormBLocBasedState extends State<EmailSignInFormBLocBased> {
         height: 8.0,
       ),
       FormSubmitButton(
-        onPressed: submitEnable ? _submit : null,
-        text: primaryText,
+        onPressed: model.submitEnable ? _submit : null,
+        text: model.primaryButtonText,
       ),
       SizedBox(
         height: 8.0,
       ),
       FlatButton(
-        onPressed: !model.isLoading ? () => _toogleFormType(model) : null,
-        child: Text(secondaryText),
+        onPressed: !model.isLoading ? _toogleFormType : null,
+        child: Text(model.secondaryButtonText),
       )
     ];
   }
 
   TextField _buildEmailTextField(EmailSignInModel model) {
-    bool showEmailError =
-        model.submitted && !widget.emailValidator.isValid(model.email);
     return TextField(
       controller: _emailController,
       focusNode: _emailFocusNode,
       decoration: InputDecoration(
         labelText: 'Email',
         hintText: 'test@test.com',
-        errorText: showEmailError ? widget.inValidEmailText : null,
+        errorText: model.emailErrorText,
         enabled: model.isLoading == false,
       ),
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
-      onChanged: (email) => widget.bloc.updateWith(email: email),
+      onChanged: widget.bloc.updateEmail,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _emailEditingComplete(model),
     );
   }
 
   TextField _buildPasswordTextField([EmailSignInModel model]) {
-    bool showPasswordErrorText =
-        model.submitted && !widget.passwordValidator.isValid(model.password);
     return TextField(
       controller: _passwordController,
       focusNode: _passwordFocusNode,
       decoration: InputDecoration(
         labelText: 'Password',
-        errorText: showPasswordErrorText ? widget.inValidEmailText : null,
+        errorText: model.passwordErrorText,
         enabled: model.isLoading == false,
       ),
       obscureText: true,
       textInputAction: TextInputAction.done,
-      onChanged: (password) => widget.bloc.updateWith(password: password),
+      onChanged: widget.bloc.updatePassword,
       onEditingComplete: _submit,
     );
   }
